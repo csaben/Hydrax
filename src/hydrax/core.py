@@ -27,6 +27,7 @@ def train(
         print(f"Training with {ensemble.__class__.__name__}")
     model_states = ensemble  # just for readability
     opt_states = parallel_init(ensemble, lr)
+    # TODO: make this a parameter
     dataset_indices = jnp.linspace(0, 783, 784).astype(jnp.int32)
 
     # Usage in your loop
@@ -54,6 +55,7 @@ def get_trained_models(
     verbose=True,
     start_slice: str = "0_784",
     random_key=0,
+    num_models=784,
 ):
     """sample usage of hydrax with MNIST. Default subslice amount is of step size 1.
 
@@ -73,7 +75,7 @@ def get_trained_models(
 
     optim = optax.adamw(lEARNING_RATE)  # Initialise the optimiser
     key = jax.random.PRNGKey(random_key)
-    keys = jax.random.split(key, 784)  #
+    keys = jax.random.split(key, num_models)  #
     models = init_models(keys, model_type)
     trained_models = train(
         x_train,
