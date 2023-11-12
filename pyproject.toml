@@ -19,6 +19,8 @@ classifiers = [
 urls = { code = "https://github.com/csaben/hydrax" }
 dependencies = [
     "jax",
+    "equinox",
+    "optax"
 ]
 optional-dependencies = { dev = ["pytest", "ruff", "black", "flake8", "mypy"]}
 
