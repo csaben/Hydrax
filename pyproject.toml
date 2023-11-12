@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=58.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hydrax"
+description= "A jax implementation for training models in parallel with different slices of data from a larger dataset."
+readme = "README.md"
+version = "0.1.0"
+requires-python = ">=3.10.0"
+authors = [{ name = "Clark Saben", email = "csaben@mail.umw.edu"}]
+keywords = []
+classifiers = [
+    "Development Status :: 1 - Research",
+    "Environment :: Console",
+    "Operating System :: Linux, MacOS",
+    "Programming Language :: Python :: 3.10",
+]
+urls = { code = "https://github.com/csaben/hydrax" }
+dependencies = [
+    "jax",
+]
+optional-dependencies = { dev = ["pytest", "ruff", "black", "flake8", "mypy"]}
+
+[tool.setuptools]
+zip-safe = true
+include-package-data = true
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "tests"]
+known_first_party = ["hydrax"]
+
+[tool.mypy]
+disallow_untyped_calls = true
+disallow_untyped_imports = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+no_implicit_optional = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+check_untyped_defs = true
+show_error_codes = true
+namespace_packages = true
+explicit_package_bases = true
+
+[tool.ruff]
+select = ["B", "C90", "E", "F", "W"]
+ignore = ["E501"]
+line-length = 88
+
+[tool.ruff.isort]
+known_first_party = ["hydrax"]
+
+[tool.ruff.mccabe]
+max-complexity = 18
