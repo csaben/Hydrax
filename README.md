@@ -3,8 +3,11 @@
  ![Static Badge](https://img.shields.io/badge/python-3.10-blue?logo=python)
  ![Static Badge](https://img.shields.io/badge/jax-0.4.17-green)
 
-A jax implementation for training models in parallel with different slices of data from a larger dataset.
+A jax implementation for training models in parallel with different slices of data from a larger dataset. 
 
+Like a multiheaded mythological hydra, Hydrax enables each model head to select its own subset of data to learn from a base dataset. More specifically, Hyrdax allows for variable sized slices of data to be used inside of each model with them all trained in parallel! This works great for researcher trying to get the most out of a single GPU, but generalizes to larger setups.
+
+The sampling method used in Hydrax makes it such that each model doesn't get stuck continuously sampling the same slice of data if the model number is larger than the slice size.
 
 # Installation
 
@@ -19,7 +22,7 @@ A jax implementation for training models in parallel with different slices of da
 Let's imagine you have 784 datapoints. To then train 784 models from model 1 to model 784, each getting it's model number worth of datapoints (sliced from 0:model_number), we would do as follows:
 
 ```python
-from hyrax import get_trained_models
+from hydrax import get_trained_models
 import equinox as eqx
 
 ...
