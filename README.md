@@ -16,7 +16,7 @@ A jax implementation for training models in parallel with different slices of da
 3. `pip install -e .`
 
 # Examples
-Let's imagine you have 784 datapoints. To then train 784 models with each model getting from model 1 to model 784, each getting it's model number worth of datapoints, we would do as follows:
+Let's imagine you have 784 datapoints. To then train 784 models from model 1 to model 784, each getting it's model number worth of datapoints (sliced from 0:model_number), we would do as follows:
 
 ```python
 from hyrax import get_trained_models
