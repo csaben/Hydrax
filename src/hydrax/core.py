@@ -17,6 +17,7 @@ def train(
     y_train,
     ensemble,
     optim: optax.GradientTransformation,
+    loss: loss,
     steps: int,
     print_every: int,
     keys,
@@ -56,6 +57,7 @@ def get_trained_models(
     start_slice: str = "0_784",
     random_key=0,
     num_models=784,
+    loss=loss,
 ):
     """sample usage of hydrax with MNIST. Default subslice amount is of step size 1.
 
@@ -82,6 +84,7 @@ def get_trained_models(
         y_train,
         models,
         optim,
+        loss,
         steps=STEPS,
         print_every=PRINT_EVERY,
         keys=keys,

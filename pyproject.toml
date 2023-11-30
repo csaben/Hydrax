@@ -17,11 +17,11 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
 ]
 urls = { code = "https://github.com/csaben/hydrax" }
-dependencies = [
-    "jax",
-    "equinox",
-    "optax"
-]
+# dependencies = [
+#     "jax",
+#     "equinox",
+#     "optax"
+# ]
 optional-dependencies = { dev = ["pytest", "ruff", "black", "flake8", "mypy"]}
 
 [tool.setuptools]

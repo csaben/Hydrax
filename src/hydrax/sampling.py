@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Alias, Any, List, TypeAlias, Union
+from typing import Any, List, TypeAlias, Union
 
 import equinox as eqx
 import jax
@@ -11,7 +11,7 @@ Model: TypeAlias = Any
 loss: TypeAlias = Any
 
 
-@eqx.filter_vmap(in_axes=(None, eqx.if_array(0), 0, 0, 0, 0))
+@eqx.filter_vmap(in_axes=(None, eqx.if_array(0), 0, 0, 0, None))
 def parallel_step(optim, model, opt_state, x, y, loss):
     loss_value, grads = eqx.filter_value_and_grad(loss)(model, x, y)
     updates, opt_state = optim.update(grads, opt_state, model)
