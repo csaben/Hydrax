@@ -22,14 +22,21 @@ def train(
     print_every: int,
     keys,
     lr=1e-3,
+    indices=(0, 783),
     verbose=True,
 ) -> Model:
     if verbose:
         print(f"Training with {ensemble.__class__.__name__}")
     model_states = ensemble  # just for readability
+    start_idx, end_idx = indices
     opt_states = parallel_init(ensemble, lr)
-    # TODO: make this a parameter
-    dataset_indices = jnp.linspace(0, 783, 784).astype(jnp.int32)
+    # (start_idx, end_idx - start_idx - 1, end_idx)
+    # i.e. mnist, (0, 783, 784)
+    # dataset_indices = jnp.linspace(0, 783, 784).astype(jnp.int32)
+    print(start_idx, end_idx - start_idx - 1, end_idx)
+    dataset_indices = jnp.linspace(start_idx, end_idx - start_idx - 1, end_idx).astype(
+        jnp.int32
+    )
 
     # Usage in your loop
     data_iterator = multi_iterator((x_train, y_train), dataset_indices)
@@ -71,11 +78,11 @@ def get_trained_models(
     start_idx, end_idx = map(int, start_slice.split("_"))
 
     # we will test on the full test set
-    lEARNING_RATE = 3e-4
+    LEARNING_RATE = 3e-4
     STEPS = 300
     PRINT_EVERY = 60
 
-    optim = optax.adamw(lEARNING_RATE)  # Initialise the optimiser
+    optim = optax.adamw(LEARNING_RATE)  # Initialise the optimiser
     key = jax.random.PRNGKey(random_key)
     keys = jax.random.split(key, num_models)  #
     models = init_models(keys, model_type)
@@ -88,7 +95,8 @@ def get_trained_models(
         steps=STEPS,
         print_every=PRINT_EVERY,
         keys=keys,
-        lr=lEARNING_RATE,
+        lr=LEARNING_RATE,
+        indices=(start_idx, end_idx),
         verbose=True,
     )
 
