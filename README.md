@@ -5,7 +5,7 @@
 
 A jax implementation for training models in parallel with different slices of data from a larger dataset. 
 
-Like a multiheaded mythological hydra, Hydrax enables each model head to select its own subset of data to learn from a base dataset. More specifically, Hyrdax allows for variable sized slices of data to be used inside of each model with them all trained in parallel! This works great for researcher trying to get the most out of a single GPU, but generalizes to larger setups.
+Like a multiheaded mythological hydra, Hydrax enables each model head to select its own subset of data to learn from a base dataset. More specifically, Hydrax allows for variable sized slices of data to be used inside of each model with them all trained in parallel! This works great for researcher trying to get the most out of a single GPU, but generalizes to larger setups.
 
 The sampling method used in Hydrax makes it such that each model doesn't get stuck continuously sampling the same slice of data if the model number is larger than the slice size.
 
@@ -26,11 +26,29 @@ from hydrax import get_trained_models
 import equinox as eqx
 
 ...
+import equinox as eqx
+from hydrax import get_trained_models
 
-x_train, y_train = get_data() # your own fn for dataloading
+# cross entropy loss
+from hydrax.loss import loss
 
-# after setting dataset up and defining a eqx model, train models in parallel
-models = get_trained_models(x_train, y_train, num_models=784, model_type="NonLinearModel", verbose=False start_slice="0_784")
+# basic eqx model
+from hydrax.nn.nonlinear import NonLinearModel
+
+start_slice = "0_784"
+start_idx, end_idx = map(int, start_slice.split("_"))
+x_train, y_train = load_data() # your dataloading fn for your dataset
+x_train, y_train = x_train[start_idx: end_idx], y_train[start_idx: end_idx]
+
+models = get_trained_models(
+    x_train,
+    y_train,
+    num_models=784,
+    model_type=NonLinearModel,
+    verbose=True,
+    start_slice="0_784",
+    loss=loss,
+)
 
 # save models as a batch of model
 eqx.tree_serialise_leaves(next_filename, models)
