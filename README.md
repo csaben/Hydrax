@@ -19,6 +19,7 @@ The sampling method used in Hydrax makes it such that each model doesn't get stu
 3. `pip install -e .`
 
 For cuda support (i.e. to make it go brr) run optional 4th step
+
 4. `pip install -e ".[cuda]"`
 
 # Examples
@@ -28,7 +29,6 @@ Let's imagine you have 784 datapoints. To then train 784 models from model 1 to 
 from hydrax import get_trained_models
 import equinox as eqx
 
-...
 import equinox as eqx
 from hydrax import get_trained_models
 
