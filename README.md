@@ -15,7 +15,7 @@ The sampling method used in Hydrax makes it such that each model doesn't get stu
 
 
 1. `git clone git@github.com:csaben/Hydrax.git`
-2. `cd Hyrdax`
+2. `cd Hydrax`
 3. `pip install -e .`
 
 # Examples
@@ -30,7 +30,7 @@ import equinox as eqx
 x_train, y_train = get_data() # your own fn for dataloading
 
 # after setting dataset up and defining a eqx model, train models in parallel
-models = get_trained_models(x_train, y_train, num_models=784 model_type="NonLinearModel", verbose=False start_slice="0_784")
+models = get_trained_models(x_train, y_train, num_models=784, model_type="NonLinearModel", verbose=False start_slice="0_784")
 
 # save models as a batch of model
 eqx.tree_serialise_leaves(next_filename, models)
