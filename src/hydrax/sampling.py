@@ -5,7 +5,6 @@ import equinox as eqx
 import jax
 import jax.numpy as jnp
 import jax.random as jr
-import numpy as np
 
 Model: TypeAlias = Any
 loss: TypeAlias = Any

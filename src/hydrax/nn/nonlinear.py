@@ -1,9 +1,9 @@
 import equinox as eqx
 import jax
 import jax.numpy as jnp
-import numpy as np
 from jax import device_put, grad, jit, random, value_and_grad, vmap
-from jaxtyping import Array, Float, Int, PyTree  # https://github.com/google/jaxtyping
+from jaxtyping import (Array, Float,  # https://github.com/google/jaxtyping
+                       Int, PyTree)
 
 
 class NonLinearModel(eqx.Module):

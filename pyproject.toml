@@ -6,7 +6,6 @@ build-backend = "setuptools.build_meta"
 name = "hydrax"
 description= "A jax implementation for training models in parallel with different slices of data from a larger dataset."
 readme = "README.md"
-version = "0.1.0"
 requires-python = ">=3.10.0"
 authors = [{ name = "Clark Saben", email = "csaben@mail.umw.edu"}]
 keywords = []
@@ -17,12 +16,17 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
 ]
 urls = { code = "https://github.com/csaben/hydrax" }
-# dependencies = [
-#     "jax",
-#     "equinox",
-#     "optax"
-# ]
-optional-dependencies = { dev = ["pytest", "ruff", "black", "flake8", "mypy"]}
+dependencies = ["jaxlib", "equinox", "optax"]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = { file = "src/hydrax/VERSION.txt" }
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "black", "flake8", "mypy"]
+cuda = ["jax[cuda12_pip]"]
+cpu = ["jax[cpu]"]
+
 
 [tool.setuptools]
 zip-safe = true
