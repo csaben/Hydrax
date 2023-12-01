@@ -24,7 +24,7 @@ version = { file = "src/hydrax/VERSION.txt" }
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff", "black", "flake8", "mypy"]
-cuda = ["jax[cuda12_pip]"]
+cuda= ["jax[cuda11_pip]"]
 cpu = ["jax[cpu]"]
 
 

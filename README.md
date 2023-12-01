@@ -18,6 +18,9 @@ The sampling method used in Hydrax makes it such that each model doesn't get stu
 2. `cd Hydrax`
 3. `pip install -e .`
 
+For cuda support (i.e. to make it go brr) run optional 4th step
+4. `pip install -e ".[cuda]"`
+
 # Examples
 Let's imagine you have 784 datapoints. To then train 784 models from model 1 to model 784, each getting it's model number worth of datapoints (sliced from 0:model_number), we would do as follows:
 
@@ -57,12 +60,9 @@ The above example is with an MNIST like dataset in mind.
 
 # Dependencies
 
-
-
-
 1. Equinox
-2. Jax
-3. Flax
+2. Jaxlib
+3. Optax
 
 # Contributing
 Hydrax currently only supports tasks specifically oriented towards classification (binary crossentropy is built-in). I intend to incorporate NLP support soon, but pull requests are welcome!
