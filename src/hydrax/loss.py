@@ -4,6 +4,7 @@ import jax
 import jax.numpy as jnp
 from jax import jit
 from jaxtyping import Array, Float, Int  # https://github.com/google/jaxtyping
+
 Model: TypeAlias = Any
 
 
@@ -27,6 +28,7 @@ def loss(
 def cross_entropy(
     y: Int[Array, " batch"], pred_y: Float[Array, "batch 2"]
 ) -> Float[Array, ""]:
+    """requires one hot to be done at eval time"""
     num_classes = pred_y.shape[
         -1
     ]  # Assuming the number of classes is the size of the last dimension of pred_y
@@ -46,32 +48,3 @@ def cross_entropy(
     # [0,-20] * [1,0] = 0
     # => no loss to be added
     return jnp.mean(loss)
-
-
-# next is experimental cross entropy with a mapping fn
-@jit
-def remap_labels(y):
-    """note: if you use this you need the mapping at eval time"""
-    # Find the unique labels and sort them
-    unique_labels = jnp.unique(y)
-    sorted_unique_labels = jnp.sort(unique_labels)
-
-    # Create a mapping from unique labels to a range from 0 to len(unique_labels)-1
-    mapping = {label: index for index, label in enumerate(sorted_unique_labels)}
-
-    # Remap the labels
-    remapped_labels = jnp.vectorize(mapping.get)(y)
-    return remapped_labels
-
-
-def categorical_cross_entropy(y: Array, pred_y: Array) -> Array:
-    # Remap labels
-    y_remap = remap_labels(y)
-
-    # Compute loss with remapped labels
-    log_pred_y = jax.nn.log_softmax(pred_y, axis=-1)
-    true_log_probs = jnp.take_along_axis(
-        log_pred_y, jnp.expand_dims(y_remap, axis=-1), axis=-1
-    )
-    loss = -jnp.mean(true_log_probs)
-    return loss
