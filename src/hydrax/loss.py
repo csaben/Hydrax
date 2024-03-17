@@ -29,6 +29,11 @@ def cross_entropy(
 ) -> Float[Array, ""]:
     # y are the true targets, and should be integers 0-1.
     # pred_y are the log-softmax'd predictions that we did in our model.
+    # print(jnp.isnan(pred_y).all())
+    # print(y.shape, pred_y.shape)
     pred_y = jax.nn.log_softmax(pred_y, axis=-1)  # Adding softmax here
+    # print(jnp.isnan(pred_y).all())
+    # NOTE: i remove this an everything works, why did i even ever put this here?
+    # NOTE: no you cant remove this it ruins everything LOL
     pred_y = jnp.take_along_axis(pred_y, jnp.expand_dims(y, 1), axis=1)
     return -jnp.mean(pred_y)

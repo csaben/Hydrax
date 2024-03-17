@@ -28,6 +28,8 @@ def unbatch_model(ensemble: Model, idx):
 
     # https://docs.kidger.site/equinox/api/manipulation/#:~:text=equinox.tree_at(where%3A,%C2%A4
     model = type(ensemble)
+    print("model type is", model)
     tmp_model = model(key)
     model = eqx.tree_at(where, tmp_model, weights)
+    print(model)
     return model

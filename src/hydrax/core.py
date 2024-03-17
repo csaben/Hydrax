@@ -19,8 +19,8 @@ def train(
     optim: optax.GradientTransformation,
     loss: loss,
     steps: int,
-    print_every: int,
     keys,
+    print_every: int = 60,
     lr=1e-3,
     indices=(0, 783),
     verbose=True,
@@ -29,6 +29,8 @@ def train(
         print(f"Training with {ensemble.__class__.__name__}")
     model_states = ensemble  # just for readability
     start_idx, end_idx = indices
+    # SMOL
+    lr = 1e-7
     opt_states = parallel_init(ensemble, lr)
     # (start_idx, end_idx - start_idx - 1, end_idx)
     # i.e. mnist, (0, 783, 784)
@@ -42,17 +44,45 @@ def train(
     data_iterator = multi_iterator((x_train, y_train), dataset_indices)
     for step in range(steps):
         x, y = next(data_iterator)
+        # nan_mask = jnp.isnan(x)
+        # nan_indices = jnp.where(nan_mask)
+        # print("NaN locations BEFORE parallel step:", nan_indices)
+        # X NOT NAN HERE
+        # with jax.debug_nans():
         model_states, opt_states, train_loss, len_of_data, pre_hash = parallel_step(
             optim, model_states, opt_states, x, y, loss
         )
+
+        # nan_mask = jnp.isnan(train_loss)
+        # nan_indices = jnp.where(nan_mask)
+        # print("NaN locations after parallel step:", nan_indices)
+        # LOSS NAN HERE AT 4th MODEL
         if verbose and ((step % print_every) == 0 or (step == steps - 1)):
             for i, loss_val in enumerate(train_loss):
-                unbatch_model(model_states, i)
+                # ith_model = unbatch_model(model_states, i)
+                # ith_perf = ith_model.evaluate(xtest, ytest)
+                # ith_perf = ith_model.evaluate(x_train, y_train)
+                # print(xtest.shape)
+                # print(xtest.T.shape)
+                # print(ith_model)
+                # ith_output = ith_model(xtest)
+                # ith_perf = jnp.mean(jnp.equal(jnp.argmax(ith_output, axis=-1), ytest))
+                # if jnp.isnan(loss_val):
+                #     print(loss_val)
+                #     print("loss value nan at model", i + 1, "at step", step)
+                #     import sys
+
+                #     sys.exit()
+                # print(
+                #     f"Model {i+1} Loss at step {step}: {loss_val:.2f} and len of data: {len_of_data} and perf: {ith_perf:.2f}%"
+                # )
+                # FIXME: one day it would be nice to see performance here, you could get it from the parallel step if you
+                # implement it in there
                 print(
-                    f"Model {i+1} Loss at step {step}: {loss_val} and len of data: {len_of_data}"
+                    f"Model {i+1} Loss at step {step}: {loss_val:.2f} and len of data: {len_of_data}"
                 )
-    if verbose:
-        print(train_loss)
+    # if verbose:
+    #     print(train_loss)
     return model_states
 
 

@@ -8,11 +8,17 @@ import jax.random as jr
 
 Model: TypeAlias = Any
 loss: TypeAlias = Any
+import sys
 
 
 @eqx.filter_vmap(in_axes=(None, eqx.if_array(0), 0, 0, 0, None))
 def parallel_step(optim, model, opt_state, x, y, loss):
+    # print(x)
+    # print(loss)
+
     loss_value, grads = eqx.filter_value_and_grad(loss)(model, x, y)
+    # print(loss_value)
+
     updates, opt_state = optim.update(grads, opt_state, model)
     model = eqx.apply_updates(model, updates)
 
@@ -34,6 +40,7 @@ def unbatch_model(ensemble: Model, idx):
     model = type(ensemble)
     tmp_model = model(key)
     model = eqx.tree_at(where, tmp_model, weights)
+    return model
 
 
 def get_first_seed(dataset_index):
