@@ -33,9 +33,10 @@ theme:
 site_name: Hydrax
 site_description: The documentation for the Hydrax software library.
 site_author: Clark Saben
-site_url: clark.saben.org/Hydrax
+site_url: http://clark.saben.org/Hydrax
 
 repo_url: https://github.com/csaben/Hydrax
+
 repo_name: csaben/Hydrax
 edit_uri: ""  # No edit button, as some of our pages are in /docs and some in /examples via symlink, so it's impossible for them all to be accurate
 
