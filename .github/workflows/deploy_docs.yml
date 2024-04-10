@@ -9,7 +9,7 @@ jobs:
   build-and-deploy:
     strategy:
       matrix:
-        python-version: [ 3.8 ]  # Define Python version
+        python-version: [ 3.11 ]  # Define Python version
         os: [ ubuntu-latest ]  # Define OS
     runs-on: ${{ matrix.os }}
 
