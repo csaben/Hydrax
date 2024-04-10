@@ -1,17 +1,18 @@
-name: Build docs
+name: Deploy MkDocs to GitHub Pages
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on push to main branch
 
 jobs:
-  build:
+  build-and-deploy:
     strategy:
       matrix:
-        python-version: [ 3.11 ]
-        os: [ ubuntu-latest ]
+        python-version: [ 3.8 ]  # Define Python version
+        os: [ ubuntu-latest ]  # Define OS
     runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -29,10 +30,10 @@ jobs:
       - name: Build docs
         run: |
           mkdocs build
-          mkdocs build  # twice, see https://github.com/patrick-kidger/pytkdocs_tweaks
+          mkdocs build  # Build twice if needed
 
-      - name: Upload docs
-        uses: actions/upload-artifact@v2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: docs
-          path: site  # where `mkdocs build` puts the built site
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site  # Adjust if your site directory is elsewhere
